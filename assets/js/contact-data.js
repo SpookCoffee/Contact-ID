@@ -7,24 +7,25 @@
  * Add a third or fourth entry to see the layout adapt.
  */
 export const CONTACT = {
-  firstName: "Your",
-  lastName: "Name",
+  firstName: "Marko",
+  lastName: "Walters-Gerout",
   role: "Personal contact card",
   description: "One simple place to stay in touch.",
 
   // Leave blank to hide the phone or email row.
-  phone: "",             // Example: "+14125550123"
-  email: "",             // Example: "hello@example.com"
+  phone: "+17247599272",             // Example: "+14125550123"
+  email: "marko.gerout+nfc@gmail.com",             // Example: "hello@example.com"
 
   // These are public profile links, carried over from your earlier version.
   // Set any URL to "" to hide the button. Use https:// links only.
   links: [
     { label: "GitHub", url: "https://github.com/SpookCoffee" },
     { label: "LinkedIn", url: "https://www.linkedin.com/in/marko-wg" },
+    { label: "My Portfolio", url: "https://trex-runner.com" },
     // { label: "Portfolio", url: "https://example.com" },
     // { label: "My projects", url: "https://example.com/projects" },
   ],
 
   // Optional message included only inside the saved .vcf file.
-  note: "",
+  note: "First time callers will get ansered by an anserring machine, just answer the prompted Questions.",
 };
