@@ -1,32 +1,282 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>Marko Walters-Gerout</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{
-    font-family:Arial,sans-serif;
-    max-width:600px;
-    padding:20px;
-    text-align:center;
-}
-.button{
-    display:block;
-    margin:10px 0;
-    padding:15px;
-    background:#0078d4;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="A personal digital contact card.">
+  <title>Personal Contact Card</title>
+
+  <!--
+    ================================================================
+    EDIT YOUR PUBLIC DETAILS HERE WHEN YOU ARE READY.
+    IMPORTANT: EVERYTHING YOU ADD WILL BE PUBLIC ON GITHUB PAGES.
+    Leave a value empty ("") to hide it or mark it as not provided.
+    ================================================================
+  -->
+  <script>
+    const CONTACT = {
+      firstName: "Your",
+      lastName: "Name",
+      role: "Personal contact card",
+      description: "One simple place to stay in touch.",
+      phone: "",            // Example: "+14125550123"
+      email: "",            // Example: "contact@example.com"
+      website: "",          // Optional HTTPS link
+      github: "",           // Optional HTTPS GitHub profile
+      linkedin: "",         // Optional HTTPS LinkedIn profile
+      note: ""              // Optional note saved in the vCard
+    };
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111111;
+      --card: #1b1b1b;
+      --surface: #262626;
+      --surface-raised: #2d2d2d;
+      --text: #f5f5f5;
+      --muted: #bdbdbd;
+      --quiet: #969696;
+      --border: #3a3a3a;
+      --wine: #6e1f32;
+      --wine-hover: #84263b;
+      --wine-soft: #a65e70;
+      --focus: #e3a5b3;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 24px 18px;
+      background: radial-gradient(ellipse 54% 35% at 50% 2%, rgba(110,31,50,.12), transparent 88%), var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    a, button { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    .shell { width: 100%; max-width: 490px; }
+    .masthead {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin: 0 3px 16px;
+      color: var(--muted); font-size: .73rem; letter-spacing: .16em; font-weight: 750;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 9px; }
+    .brand-mark { display: block; width: 10px; height: 10px; background: var(--wine-soft); border-radius: 3px; transform: rotate(45deg); }
+    .masthead .right { font-weight: 550; color: var(--quiet); letter-spacing: .12em; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 26px; overflow: hidden;
+      box-shadow: 0 24px 85px rgba(0,0,0,.28), 0 3px 15px rgba(0,0,0,.16);
+    }
+    .top-strip { height: 4px; background: linear-gradient(90deg, var(--wine), #a55b6f 50%, var(--wine)); }
+    .inner { padding: 32px 30px 28px; }
+    .profile { text-align: center; }
+    .avatar {
+      display: grid; place-items: center; width: 78px; height: 78px;
+      margin: 0 auto 19px; border: 1px solid #663743; border-radius: 24px;
+      background: linear-gradient(135deg, #4b2430, #2d2025);
+      color: #f6e6ea; font-size: 1.65rem; font-weight: 720;
+      letter-spacing: -.045em; box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .eyebrow { margin: 0 0 10px; color: #d09aa7; font-size: .67rem; font-weight: 750; letter-spacing: .21em; text-transform: uppercase; }
+    h1 { margin: 0; color: var(--text); font-size: clamp(1.9rem, 7vw, 2.35rem); letter-spacing: -.045em; line-height: 1.13; font-weight: 740; overflow-wrap: anywhere; }
+    .role { color: var(--muted); margin: 10px 0 0; font-size: .95rem; }
+    .intro { margin: 15px auto 0; color: var(--quiet); font-size: .87rem; max-width: 28ch; }
+    .divider { border: 0; border-top: 1px solid var(--border); margin: 28px 0 22px; }
+    .section-title { margin: 0 0 13px; font-size: .72rem; letter-spacing: .15em; font-weight: 780; color: var(--muted); text-transform: uppercase; }
+    .contact-list { display: grid; gap: 10px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 12px;
+      min-height: 74px; padding: 13px 14px; border: 1px solid var(--border);
+      border-radius: 14px; background: var(--surface);
+    }
+    .contact-icon { flex: none; display: grid; place-items: center; width: 41px; height: 41px; border: 1px solid #444; background: #303030; border-radius: 11px; color: #d9d9d9; }
+    .contact-icon svg { display: block; width: 19px; height: 19px; }
+    .contact-copy { min-width: 0; flex: 1; }
+    .contact-label { color: var(--muted); font-size: .72rem; font-weight: 620; display: block; }
+    .contact-value { display: block; color: var(--text); font-size: .91rem; font-weight: 620; overflow-wrap: anywhere; }
+    .contact-value.placeholder { color: var(--quiet); font-weight: 460; font-size: .83rem; }
+    .quick-actions { display: flex; gap: 8px; flex: none; }
+    .small-link { border: 1px solid #555; border-radius: 9px; padding: 8px 10px; color: #f3f3f3; background: #333; text-decoration: none; font-size: .77rem; font-weight: 680; }
+    .small-link:hover { background: #424242; }
+    .placeholder-status { font-size: .68rem; color: #929292; white-space: nowrap; }
+    .extra-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+    .extra-link { padding: 9px 12px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 10px; text-decoration: none; font-size: .81rem; font-weight: 650; }
+    .extra-link:hover { color: white; background: var(--surface-raised); }
+    .primary {
+      width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      min-height: 55px; margin-top: 23px; border: 1px solid #9a4559; border-radius: 13px;
+      background: var(--wine); color: white; font-size: .99rem; font-weight: 750;
+      text-decoration: none; cursor: pointer; transition: background .15s ease, transform .15s ease;
+    }
+    .primary:hover { background: var(--wine-hover); }
+    .primary:active { transform: scale(.99); }
+    .primary svg { width: 19px; height: 19px; }
+    .hint { margin: 12px 4px 0; text-align: center; font-size: .75rem; line-height: 1.5; color: var(--quiet); }
+    .preview-pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; border: 1px solid #5e3b42; padding: 6px 10px; margin-bottom: 18px; color: #e1b7c1; background: rgba(110,31,50,.13); font-size: .7rem; font-weight: 700; letter-spacing: .03em; }
+    .preview-pill .dot { display: block; width: 6px; height: 6px; background: #c78a9a; border-radius: 50%; }
+    footer { color: var(--quiet); text-align: center; margin: 20px 8px 0; font-size: .71rem; line-height: 1.7; }
+    footer strong { color: var(--muted); font-weight: 640; }
+    #status { min-height: 1.1em; }
+    @media (max-width: 390px) {
+      body { padding: 18px 13px; }
+      .inner { padding: 26px 18px 23px; }
+      .contact-item { padding: 12px 10px; gap: 9px; }
+      .small-link { padding: 8px; }
+      .contact-icon { width: 37px; height: 37px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .primary { transition: none; } }
+  </style>
 </head>
 <body>
-<h1>Marko Walters-Gerout</h1>
-<p>Engineer / Technician</p>
-<a class="button" href="tel:">📞 Cell</a>
-<a class="button" href="mailto:">📧 Email</a>
-<a class="button" href="">💼</a>
-<a class="button" href="MarkoWaltersGerout.vcf">➕ Save Contact</a>
+  <div class="shell">
+    <header class="masthead">
+      <span class="brand"><span class="brand-mark" aria-hidden="true"></span> CONTACT / ID</span>
+      <span class="right">PERSONAL</span>
+    </header>
+    <main class="card" id="main">
+      <div class="top-strip" aria-hidden="true"></div>
+      <div class="inner">
+        <section class="profile" aria-labelledby="person-name">
+          <div class="preview-pill" id="preview-pill"><span class="dot" aria-hidden="true"></span> SAMPLE CARD · NO PERSONAL DETAILS</div>
+          <div class="avatar" id="avatar" aria-hidden="true">YN</div>
+          <p class="eyebrow">Nice to meet you</p>
+          <h1 id="person-name">Your Name</h1>
+          <p class="role" id="role">Personal contact card</p>
+          <p class="intro" id="description">One simple place to stay in touch.</p>
+        </section>
+        <hr class="divider">
+        <section aria-labelledby="connect-title">
+          <h2 class="section-title" id="connect-title">Get in touch</h2>
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13 1 .38 2 .75 2.9a2 2 0 0 1-.45 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.37 1.9.62 2.9.75a2 2 0 0 1 1.6 1.9z"/></svg></div>
+              <div class="contact-copy"><span class="contact-label">Phone</span><span class="contact-value placeholder" id="phone-value">Add a number when ready</span></div>
+              <div class="quick-actions" id="phone-actions" hidden><a class="small-link" id="call-link">Call</a><a class="small-link" id="text-link">Text</a></div>
+              <span class="placeholder-status" id="phone-not-set">Not set</span>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></svg></div>
+              <div class="contact-copy"><span class="contact-label">Email</span><span class="contact-value placeholder" id="email-value">Add an address when ready</span></div>
+              <div class="quick-actions" id="email-actions" hidden><a class="small-link" id="email-link">Email</a></div>
+              <span class="placeholder-status" id="email-not-set">Not set</span>
+            </div>
+          </div>
+          <nav class="extra-links" id="extra-links" aria-label="Other links" hidden></nav>
+        </section>
+        <button type="button" class="primary" id="save-contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h8M8 12h4M12 16h4M14 14v4"/></svg><span id="save-label">Save sample contact</span></button>
+        <p class="hint" id="hint">Downloads a standard .vcf contact file. No account required.</p>
+      </div>
+    </main>
+    <footer><strong>Simple by design.</strong> No third-party fonts, analytics scripts, or trackers added to this page.<div id="status" role="status" aria-live="polite"></div></footer>
+  </div>
+
+  <script>
+  (() => {
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const safe = (value) => typeof value === 'string' ? value.trim() : '';
+    const first = safe(CONTACT.firstName) || 'Your';
+    const last = safe(CONTACT.lastName) || 'Name';
+    const full = `${first} ${last}`.trim();
+    const role = safe(CONTACT.role) || 'Personal contact card';
+    const email = safe(CONTACT.email);
+    const rawPhone = safe(CONTACT.phone);
+    const phone = rawPhone.replace(/[^+\d]/g, '');
+    const hasPhone = /^\+?[0-9]{7,15}$/.test(phone);
+    const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isDemo = full.toLowerCase() === 'your name' && !hasPhone && !hasEmail;
+
+    $('person-name').textContent = full;
+    $('role').textContent = role;
+    $('description').textContent = safe(CONTACT.description) || 'One simple place to stay in touch.';
+    $('avatar').textContent = `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
+    document.title = `${full} | Contact`;
+    $('preview-pill').hidden = !isDemo;
+    $('save-label').textContent = isDemo ? 'Save sample contact' : 'Save contact';
+
+    if (hasPhone) {
+      $('phone-value').textContent = rawPhone;
+      $('phone-value').classList.remove('placeholder');
+      $('call-link').href = `tel:${phone}`;
+      $('text-link').href = `sms:${phone}`;
+      $('phone-actions').hidden = false;
+      $('phone-not-set').hidden = true;
+    }
+    if (hasEmail) {
+      $('email-value').textContent = email;
+      $('email-value').classList.remove('placeholder');
+      $('email-link').href = `mailto:${email}`;
+      $('email-actions').hidden = false;
+      $('email-not-set').hidden = true;
+    }
+
+    const links = [
+      ['Website', CONTACT.website],
+      ['GitHub', CONTACT.github],
+      ['LinkedIn', CONTACT.linkedin]
+    ];
+    for (const [label, raw] of links) {
+      try {
+        const url = new URL(safe(raw));
+        if (url.protocol !== 'https:') continue;
+        const a = document.createElement('a');
+        a.className = 'extra-link';
+        a.textContent = label + ' ↗';
+        a.href = url.href;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.referrerPolicy = 'no-referrer';
+        $('extra-links').appendChild(a);
+      } catch (_) { /* Empty / invalid URL: do not show it. */ }
+    }
+    $('extra-links').hidden = !$('extra-links').children.length;
+
+    // RFC-style vCard escaping; generated from the same details shown on the page.
+    function vText(value) {
+      return String(value).replace(/\\/g, '\\\\').replace(/\r\n|\n|\r/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
+    }
+    function vCard() {
+      const lines = ['BEGIN:VCARD', 'VERSION:3.0', `N:${vText(last)};${vText(first)};;;`, `FN:${vText(full)}`];
+      if (role !== 'Personal contact card') lines.push(`TITLE:${vText(role)}`);
+      if (hasPhone) lines.push(`TEL;TYPE=CELL:${phone}`);
+      if (hasEmail) lines.push(`EMAIL;TYPE=INTERNET:${vText(email)}`);
+      for (const [label, raw] of links) {
+        try { const url = new URL(safe(raw)); if (url.protocol === 'https:' && label === 'Website') lines.push(`URL:${url.href}`); } catch (_) {}
+      }
+      if (safe(CONTACT.note)) lines.push(`NOTE:${vText(safe(CONTACT.note))}`);
+      // Include the published card URL, if it's a normal HTTPS site and no other URL is set.
+      if (!lines.some(line => line.startsWith('URL:')) && location.protocol === 'https:') lines.push(`URL:${location.origin + location.pathname}`);
+      lines.push('END:VCARD');
+      return lines.join('\r\n') + '\r\n';
+    }
+    $('save-contact').addEventListener('click', () => {
+      const blob = new Blob([vCard()], {type: 'text/vcard;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const filename = `${first}-${last}`.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '') || 'contact';
+      a.href = url;
+      a.download = `${filename}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      $('status').textContent = 'Contact file prepared. Open the downloaded .vcf to import it.';
+      window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    });
+  })();
+  </script>
 </body>
 </html>
