@@ -27,5 +27,5 @@ export const CONTACT = {
   ],
 
   // Optional message included only inside the saved .vcf file.
-  note: "First time callers will get ansered by an anserring machine, just answer the prompted Questions.",
+  note: "First time callers will get ansered by an answerring machine, just answer the prompted Questions.",
 };
