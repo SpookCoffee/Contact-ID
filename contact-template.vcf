@@ -1,10 +1,6 @@
 BEGIN:VCARD
 VERSION:3.0
-N:Walters-Gerout;Marko;;;
-FN:Marko Walters-Gerout
-TITLE:Engineer / Technician
-TEL;TYPE=CELL:+17247599272
-EMAIL;TYPE=INTERNET:marko.gerout+nfc@gmail.com
-URL:https://example.com
-NOTE:Personal contact card
+N:Name;Your;;;
+FN:Your Name
+NOTE:Sample only - the website generates a fresh vCard from assets/js/contact-data.js
 END:VCARD

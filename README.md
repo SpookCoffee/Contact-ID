@@ -1,54 +1,76 @@
-# Contact-ID — Graphite + Wine
+# Contact-ID — Graphite + Wine (v2)
 
-A small, mobile-first personal NFC contact website. Color theme **8B: Graphite + Wine**.
+A self-contained personal contact website for NFC tags, hosted free on **GitHub Pages**.
+No frameworks, analytics, third-party scripts, or API keys are needed.
 
-## What's included
+## Project structure
 
-- `index.html` — the entire contact site in **one editable file**. It automatically makes a downloadable vCard (`.vcf`) with JavaScript when a visitor taps **Save contact**.
-- `contact-template.vcf` — an optional *sample* standalone `.vcf` format file. **The website does not load this file**; its Save button builds a fresh `.vcf` from the contact details inside `index.html` so you only update your information in one place.
-- `.nojekyll` — makes GitHub Pages treat these files as ordinary static files.
+```text
+Contact-ID/
+├── index.html                Website structure
+├── assets/
+│   ├── css/styles.css        Graphite + Wine colors, sizing, responsive layout
+│   ├── js/contact-data.js    EDIT THIS for your public contact information
+│   ├── js/app.js             Displays your details and sets up buttons
+│   ├── js/vcard.js           Generates the downloaded .vcf file
+│   └── icons/favicon.svg     Local icon
+├── contact-template.vcf      Example only; NOT used by Save Contact
+├── tests/vcard.test.js       Optional Node tests
+├── package.json              Optional test command
+├── .nojekyll                 GitHub Pages: no Jekyll processing
+└── README.md
+```
 
-## Make your changes later
+## Edit your contact details in ONE place
 
-Open `index.html` on GitHub and find **EDIT YOUR PUBLIC DETAILS HERE** near the start. Edit just this block:
+Open `assets/js/contact-data.js` and edit the `CONTACT` object. Leave phone/email blank to hide those rows. Public GitHub and LinkedIn links have been carried over from the previous site.
 
 ```js
-const CONTACT = {
+export const CONTACT = {
   firstName: "Your",
   lastName: "Name",
   role: "Personal contact card",
   description: "One simple place to stay in touch.",
-  phone: "",            // Example: "+14125550123"
-  email: "",            // Example: "contact@example.com"
-  website: "",          // Optional HTTPS link
-  github: "",           // Optional HTTPS GitHub profile
-  linkedin: "",         // Optional HTTPS LinkedIn profile
-  note: ""              // Optional vCard note
+  phone: "",   // Example: "+14125550123"
+  email: "",   // Example: "hello@example.com"
+  links: [
+    { label: "GitHub", url: "https://github.com/SpookCoffee" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/marko-wg" },
+    // { label: "Portfolio", url: "https://example.com" },
+  ],
+  note: "",
 };
 ```
 
-Leave values blank to hide optional website/social links. Phone and email rows remain visibly marked "Not set" until you add valid data. Only HTTPS web/social URLs are displayed. There is no external data service. The .vcf file is generated on the visitor's device from the details in the site.
+The Save Contact button creates a fresh `.vcf` file **in the visitor's browser** using these details; the separate `contact-template.vcf` is only a format example. Do not edit it to update the website.
 
-If Safari downloads the file rather than opening Contacts, open the `.vcf` from the **Files > Downloads** folder and choose to add/import the contact. Exact system prompts may vary.
+**Mobile behavior:** 1 link = full width; 2 = equal halves; 3 = equal thirds; 4 = four equal columns on wider screens, two-by-two on small phones. The link section itself always aligns with the contact rows and Save Contact button.
 
-## Publish from a phone using GitHub
+## Use in VS Code
 
-1. Sign in to `github.com` using Safari/Chrome. The GitHub mobile app may not expose all file-upload and Pages settings.
-2. Open your existing `Contact-ID` repo. On the `main` branch, **replace** the existing `index.html` with the one in this package. Add `contact-template.vcf` and `.nojekyll`, and optionally replace `README.md`. **Do not upload the ZIP as a single file**: GitHub Pages needs `index.html` at the repository root.
-3. In your repository, open **Settings > Pages** (in a mobile browser, try **Request Desktop Website** if Settings is hidden).
-4. Under **Build and deployment**, choose **Deploy from a branch**; branch **main**; folder **/(root)**; then **Save**.
-5. After publication, GitHub Pages will show a **Visit site** link. Test it using your phone's normal browser and cellular data.
-6. In NFC Tools, choose **Write > Add a record > URL / URI**, paste that exact **HTTPS** URL, and write your NFC tag. Do not permanently lock the tag until you finish testing.
+1. Install [Visual Studio Code](https://code.visualstudio.com/) and Git (if needed).
+2. In VS Code choose **Source Control → Clone Repository**, then enter `https://github.com/SpookCoffee/Contact-ID.git` and open the folder.
+3. Replace the repo's old `index.html` and add the `assets`, `tests`, `package.json`, `.nojekyll`, etc. from this ZIP. Keep any other files you want, but don't duplicate the old styles.
+4. To preview, run a local static server in the project directory:
+   ```sh
+   python3 -m http.server 8000
+   ```
+   Open `http://localhost:8000/`. You can instead use VS Code's Live Server extension. Because JavaScript files use ES modules, **do not open index.html as a `file://` URL**.
+5. Optional: with Node.js installed, run `npm test` (no dependency installation required).
+6. In Source Control, review changes, commit, and **Push / Sync Changes** to `main`.
 
-## Privacy & security
+## GitHub Pages (mobile or desktop)
 
-- This version intentionally contains **no real name, email, phone number, or personal address**.
-- A public GitHub repository and a published GitHub Pages site are readable by everyone, not only someone holding your NFC tag. `noindex` is only a request to search engines, **not privacy**.
-- Do **not** add your home address, birthday, or main private contact details unless you want them public.
-- Use a separate public-facing email alias and, if desired, a phone number specifically for sharing.
-- Git commit history can retain values you later remove; do not commit secrets or private data even temporarily.
-- No third-party libraries, tracking scripts, fonts, or analytics scripts were added to the website. GitHub's hosting may still have normal server logs.
-- GitHub Pages hosts this page; it is **not hosted on your home Debian server**.
-- The site is not configured to collect form submissions, passwords, or personal data from visitors.
+In the GitHub repository go to **Settings → Pages → Build and deployment**, choose **Deploy from a branch**, select **main**, choose **/(root)**, and **Save**. Your site URL will normally be:
 
-GitHub instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+`https://spookcoffee.github.io/Contact-ID/`
+
+If Pages is already enabled, new commits redeploy it automatically. If the old design persists, check the **Actions** tab for the latest Pages deployment and refresh the site after deployment completes. Folder names and case must match.
+
+To program your NFC tag in NFC Tools: **Write → Add a record → URL / URI**, use the full GitHub Pages HTTPS URL, write, and test before locking the tag.
+
+## Privacy
+
+**Anything placed in a public GitHub repo or GitHub Pages is public**, including future phone/email details. Git history can preserve deleted values. `noindex` asks search engines not to index a page; it is NOT access control. Use a contact email alias if desired; avoid home address and other sensitive details.
+
+There are no trackers included in this project, though GitHub's web hosting may keep normal server logs. vCard downloads are generated on the visitor's device rather than sent to another service. Some iPhones may download the `.vcf` into Files; open it from Downloads to import it into Contacts.
