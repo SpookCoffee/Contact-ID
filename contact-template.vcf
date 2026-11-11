@@ -1,6 +1,10 @@
 BEGIN:VCARD
 VERSION:3.0
-N:Name;Your;;;
-FN:Your Name
-NOTE:Placeholder contact card. Replace these details before sharing.
+N:Walters-Gerout;Marko;;;
+FN:Marko Walters-Gerout
+TITLE:Engineer / Technician
+TEL;TYPE=CELL:+17247599272
+EMAIL;TYPE=INTERNET:marko.gerout+nfc@gmail.com
+URL:https://example.com
+NOTE:Personal contact card
 END:VCARD
